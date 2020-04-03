@@ -1,7 +1,8 @@
-package com.krishworks.countries
+package com.krishworks.countries.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.krishworks.countries.R
 
 class MainActivity : AppCompatActivity() {
 
