@@ -3,16 +3,19 @@ package com.krishworks.countries.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.krishworks.countries.R
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.krishworks.countries.model.Country
 import com.krishworks.countries.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ListViewModel
+    private lateinit var countries: MutableLiveData<List<Country>>
     private val countryListAdapter = CountryListAdapter(arrayListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
-        viewModel.refresh()
+        countries = viewModel.getCountryList()
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.countries.observe(this, Observer { countries ->
+        countries.observe(this, Observer { countries ->
             countries?.let { countryListAdapter.updateCountries(it) }
         })
 

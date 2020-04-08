@@ -9,9 +9,17 @@ import retrofit2.Response
 
 class ListViewModel : ViewModel() {
 
-    val countries = MutableLiveData<List<Country>>()
+    private lateinit var countries: MutableLiveData<List<Country>>
     val countryLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
+
+    fun getCountryList(): MutableLiveData<List<Country>> {
+        if (!::countries.isInitialized) {
+            countries = MutableLiveData()
+            this.fetchCountryList()
+        }
+        return countries
+    }
 
     fun refresh() {
         fetchCountryList()
